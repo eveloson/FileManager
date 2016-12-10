@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.file.mapper.DocMapper">
+    
+	<sql id="docColumns">
+		doc_id,
+		doc_name_o,
+		doc_name_n,
+		doc_dtime,
+		doc_ctime,
+		doc_size,
+		user_id
+	</sql>
+	
+	<insert id="addDocByDoc" parameterType="com.file.vo.Doc" useGeneratedKeys="true" keyProperty="doc_id">
+		INSERT INTO
+			t_doc( 	
+				doc_name_o,
+				doc_name_n,
+				doc_ctime,
+				doc_size,
+				user_id
+				)
+		VALUES
+			(#{doc_name_o},#{doc_name_n},#{doc_ctime},#{doc_size},#{user_id})
+	</insert>
+	
+	<select id="getDocNumByUserId" resultType="Integer">
+		SELECT 
+			count(*)
+		FROM
+			t_doc
+		WHERE 
+			doc_dtime is null
+	</select>
+			
+	<select id="getDocsByPageAndUserId" resultType="com.file.vo.Doc" parameterType="Map">
+		SELECT 
+			<include refid="docColumns"/>
+		FROM
+			t_doc
+		WHERE
+			user_id = #{user_id}
+		AND
+			doc_dtime is null
+		LIMIT #{page.start_row},#{page.page_size}
+	</select>
+	
+
+	<select id="getDocById" parameterType="int" resultType="com.file.vo.Doc">
+		SELECT 
+			<include refid="docColumns"/>
+		FROM
+			t_doc
+		WHERE
+			doc_id = #{doc_id}
+		AND 
+			doc_dtime is null
+	</select>
+	
+</mapper>
