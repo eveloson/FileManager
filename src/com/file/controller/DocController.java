@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.file.customexception.ResourceNotFoundException;
 import com.file.service.DocService;
 import com.file.service.UserService;
 import com.file.utils.DateFormatUtil;
@@ -39,8 +40,6 @@ public class DocController {
 	private UserService userService;
 	@RequestMapping(value = "/upload.do",method = RequestMethod.GET)
 	public String upload() {
-		long a = 2132112312;
-		String b = a;
 		return "upload";
 	}
 	@RequestMapping(value = "/upload.do",method = RequestMethod.POST)
@@ -58,7 +57,7 @@ public class DocController {
 		for (int i = 0; i < uploadfiles.length; i++) {
 			CommonsMultipartFile uploadfile = uploadfiles[i] ;
 			if(uploadfile.isEmpty()){
-				return "uploaderror" ;
+				throw new ResourceNotFoundException("上传文件不存在") ;
 			}
 			//获取文件名称，可以修改名称
 			String doc_name_o = uploadfile.getOriginalFilename();

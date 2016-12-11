@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.file.mapper.UserMapper">
+    
+	<sql id="userColumns">
+		user_id ,
+		user_name ,
+		user_pwd ,
+		user_ctime
+	</sql>
+	
+	<insert id="addUserByUser" parameterType="com.file.vo.User" useGeneratedKeys="true" keyProperty="user_id">
+		INSERT INTO
+			t_user(user_name,user_pwd,user_ctime)
+		VALUES
+			(#{user_name},#{user_pwd},#{user_ctime})
+	</insert>
+	
+	<select id="getUserNameByUserId" resultType="String" parameterType="int">
+		SELECT 
+			user_name
+		FROM
+			t_user
+		WHERE 
+			user_id = #{user_id}
+	</select>
+	<select id="getUserByUser" resultType="User" parameterType="User">
+		SELECT 
+			<include refid="userColumns"/>
+		FROM
+			t_user
+		WHERE 
+			user_name = #{user_name}
+		AND
+			user_pwd = #{user_pwd}
+	</select>
+	
+			
+
+	
+</mapper>

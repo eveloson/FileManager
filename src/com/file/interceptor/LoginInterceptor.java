@@ -22,7 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			System.out.println(">>>>> 用户已登录！");
 			return true ;
 		}
-		response.sendRedirect(request.getContextPath() + "/user/login.do");
+		response.sendRedirect(request.getContextPath() + "/login.html");
 		return false;
 	}
 	
