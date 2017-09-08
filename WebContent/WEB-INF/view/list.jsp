@@ -178,8 +178,8 @@
 							</td>
 							<td>${doc.doc_size}</td>
 							<td>${doc.doc_ctime}</td>
-							<td>	<a href="dorename.do?doc_id=${doc.doc_id}">重命名</a>&nbsp;&nbsp;&nbsp;
-									<a href="doremove.do?doc_id=${doc.doc_id}">删除</a></td>
+							<td>	<a href="doc/rename.do?doc_id=${doc.doc_id}">重命名</a>&nbsp;&nbsp;&nbsp;
+									<a href="doc/remove.do?doc_id=${doc.doc_id}">删除</a></td>
 						</tr>
 					</c:forEach>
 						 
@@ -208,7 +208,7 @@
 				</tr>
 				<tr>
 					<td colspan="4">
-					<a href="doc/upload.do">上传文件</a>
+					<a href="upload.html">上传文件</a>
 					</td>
 				</tr>
 			</tfoot>

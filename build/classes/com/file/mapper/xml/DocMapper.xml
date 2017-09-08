@@ -24,7 +24,6 @@
 		VALUES
 			(#{doc_name_o},#{doc_name_n},#{doc_ctime},#{doc_size},#{user_id})
 	</insert>
-	
 	<select id="getDocNumByUserId" resultType="Integer">
 		SELECT 
 			count(*)

@@ -141,6 +141,9 @@ public class DocController {
 		}
 		
 	}
-	
+	@RequestMapping(value = "/rename.do",method = RequestMethod.GET)
+	public void rename(Integer doc_id,HttpServletRequest request,HttpServletResponse response) {
+		int user_id = (int) request.getSession().getAttribute("user_id");
+	}
 	
 }

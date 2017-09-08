@@ -10,6 +10,8 @@ import com.file.vo.Doc;
 public interface DocMapper {
 	boolean addDocByDoc(Doc doc);
 	
+	boolean delDocByUserIdAndDocId(int user_id,int doc_id);
+	
 	int getDocNumByUserId(int user_id);
 		
 	List<Doc> getDocsByPageAndUserId(Map<String, Object> map);
