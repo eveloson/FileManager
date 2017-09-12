@@ -45,7 +45,7 @@ public class DocController {
 	@RequestMapping(value = "/upload.do",method = RequestMethod.POST)
 	public String doUpload(@RequestParam("doc") CommonsMultipartFile[] uploadfiles,HttpServletRequest request) throws FileNotFoundException, IOException {
 //		获取用户id
-		int user_id = (int) request.getSession().getAttribute("user_id");
+		int user_id = (int) request.getSession().getAttribute("userId");
 		//获取文件存储的目录
 		ServletContext servletContext = request.getServletContext();
 		String uploadPath = servletContext.getAttribute("uploadPath").toString()+user_id;
@@ -69,7 +69,7 @@ public class DocController {
 			String doc_size = UtilFile.getFizeSizeString(is.available());
 			FileTransferUtil.inputStreanToOuputStream(is,os);
 			String doc_ctime = DateFormatUtil.getTimeString();
-			Doc doc = new Doc(doc_name_o, doc_name_n, doc_ctime, doc_size, user_id);
+			Doc doc = new Doc(null,doc_name_o, doc_name_n, null, doc_ctime,doc_size, user_id);
 			docService.addDocByDoc(doc);
 		}
 		return "redirect:list.do";
@@ -78,28 +78,28 @@ public class DocController {
 	@RequestMapping(value = "/list.do")
 	public String list(Integer current_page,ModelMap map,HttpServletRequest request) {
 		current_page = current_page == null ? 1 : current_page;
-		int user_id = (int) request.getSession().getAttribute("user_id");
-		int total_rows = docService.getDocNumByUserId(user_id);
-		int page_size = 5 ;
-		Page page = new Page(total_rows, current_page, page_size);
-		List<Doc> docs = docService.getDocsByPageAndUserId(page, user_id);
+		int userId = (int) request.getSession().getAttribute("userId");
+		int totalRows = (int) docService.getDocNumByUserId(userId);
+		int pageSize = 5 ;
+		Page page = new Page(totalRows, current_page, pageSize);
+		List<Doc> docs = docService.getDocsByPageAndUserId(page, userId);
 		map.put("docs", docs);
 		map.put("page", page);
 		return "list";
 	}
 	@RequestMapping(value = "/download.do",method = RequestMethod.GET)
-	public void download(Integer doc_id,HttpServletRequest request,HttpServletResponse response) throws Exception {
-		if (doc_id == null) {
+	public void download(Integer docId,HttpServletRequest request,HttpServletResponse response) throws Exception {
+		if (docId == null) {
 		}
 		//获取文件存储的目录
-		Doc doc = docService.getDocById(doc_id);
+		Doc doc = docService.getDocById(docId);
 		if (doc == null) {
 		}
 		ServletContext servletContext = request.getServletContext();
 		String uploadPath = servletContext.getAttribute("uploadPath").toString();
 		int  user_id = (int) request.getSession().getAttribute("user_id");
-		String fileName = UtilFile.transCharacter(request, doc.getDoc_name_o());
-		File file = new File(uploadPath + user_id + File.separator+doc.getDoc_name_n());
+		String fileName = UtilFile.transCharacter(request, doc.getDocNameO());
+		File file = new File(uploadPath + user_id + File.separator+doc.getDocNameN());
 		//设置输出流的消息头
 		response.setCharacterEncoding("UTF-8");
 		//设置响应内容的类型及编码
@@ -141,9 +141,11 @@ public class DocController {
 		}
 		
 	}
-	@RequestMapping(value = "/rename.do",method = RequestMethod.GET)
-	public void rename(Integer doc_id,HttpServletRequest request,HttpServletResponse response) {
-		int user_id = (int) request.getSession().getAttribute("user_id");
+	@RequestMapping(value = "/remove.do",method = RequestMethod.GET)
+	public String remove(Integer docId,HttpServletRequest request,HttpServletResponse response) {
+		Integer userId = (int) request.getSession().getAttribute("userId");
+		docService.delDocByUserIdAndDocId(userId, docId);
+		return "redirect:list.do";
 	}
 	
 }

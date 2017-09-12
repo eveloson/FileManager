@@ -171,15 +171,15 @@
 					<c:forEach var="doc" items="${requestScope.docs}">
 						<tr>
 							<td>
-								<a href="doc/download.do?doc_id=${doc.doc_id}">
+								<a href="doc/download.do?docId=${doc.docId}">
 								<img src="resource/img/file.png" style="width: 20px;height: 20px;display: inline;">
-								${doc.doc_name_o}
+								${doc.docNameO}
 								</a>
 							</td>
-							<td>${doc.doc_size}</td>
-							<td>${doc.doc_ctime}</td>
-							<td>	<a href="doc/rename.do?doc_id=${doc.doc_id}">重命名</a>&nbsp;&nbsp;&nbsp;
-									<a href="doc/remove.do?doc_id=${doc.doc_id}">删除</a></td>
+							<td>${doc.docSize}</td>
+							<td>${doc.docCtime}</td>
+							<td>	<a href="doc/rename.do?docId=${doc.docId}">重命名</a>&nbsp;&nbsp;&nbsp;
+									<a href="doc/remove.do?docId=${doc.docId}">删除</a></td>
 						</tr>
 					</c:forEach>
 						 

@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.file.mapper.DocMapper;
 import com.file.service.DocService;
+import com.file.utils.DateFormatUtil;
 import com.file.vo.Page;
 import com.file.vo.Doc;
+import com.file.vo.DocExample;
+import com.file.vo.DocExample.Criteria;
 @Service("docService")
 public class DocServiceImpl implements DocService {
 	
@@ -19,15 +22,19 @@ public class DocServiceImpl implements DocService {
 	private DocMapper docMapper;
 
 	@Override
-	public boolean addDocByDoc(Doc doc) {
+	public int addDocByDoc(Doc doc) {
 		// TODO Auto-generated method stub
-		return docMapper.addDocByDoc(doc);
+		return docMapper.insertSelective(doc);
 	}
 
 	@Override
-	public int getDocNumByUserId(int user_id) {
+	public long getDocNumByUserId(int user_id) {
 		// TODO Auto-generated method stub
-		return docMapper.getDocNumByUserId(user_id);
+		DocExample example = new DocExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(user_id);
+		criteria.andDocDtimeIsNull();
+		return docMapper.countByExample(example);
 	}
 
 	@Override
@@ -36,13 +43,27 @@ public class DocServiceImpl implements DocService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("page", page);
 		map.put("user_id", user_id);
-		return docMapper.getDocsByPageAndUserId(map);
+		DocExample example = new DocExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(user_id);
+		criteria.andDocDtimeIsNull();
+		return docMapper.selectByExample(example);
 	}
 
 	@Override
 	public Doc getDocById(int doc_id) {
+		return docMapper.selectByPrimaryKey(doc_id);
+	}
+
+	@Override
+	public int delDocByUserIdAndDocId(int userId, int docId) {
 		// TODO Auto-generated method stub
-		return docMapper.getDocById(doc_id);
+		Doc doc = docMapper.selectByPrimaryKey(docId);
+		int res = 0;
+		if(doc.getUserId() == userId) {
+			res = docMapper.updateByPrimaryKeySelective(new Doc(docId,null, null,DateFormatUtil.getTimeString(), null, null, null));
+		}
+		return res;
 	}
 	
 	

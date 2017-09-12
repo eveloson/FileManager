@@ -17,7 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 //		session.setAttribute("username", new String("")); //模拟登陆
-		Integer user_id = (Integer) session.getAttribute("user_id");
+		Integer user_id = (Integer) session.getAttribute("userId");
 		if(user_id!=null){
 			System.out.println(">>>>> 用户已登录！");
 			return true ;

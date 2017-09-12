@@ -7,10 +7,9 @@ import com.file.vo.Page;
 import com.file.vo.Doc;
 
 public interface DocService {
-	boolean addDocByDoc(Doc doc);
-	int getDocNumByUserId(int user_id);
-		
+	int addDocByDoc(Doc doc);
+	long getDocNumByUserId(int user_id);
+	int delDocByUserIdAndDocId(int userId,int docId);	
 	List<Doc> getDocsByPageAndUserId(Page page,int user_id);
-
 	Doc getDocById(int doc_id);
 }

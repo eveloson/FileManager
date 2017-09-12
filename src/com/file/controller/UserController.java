@@ -23,11 +23,12 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST ,value = "/login.do")
 	public String doLogin(User user,HttpServletRequest request) {
 		User user2 = userService.getUserByUser(user);
-		System.out.println(user2);
-		if (user2 != null) {
-			request.getSession().setAttribute("user_id", user.getUser_id());
+		if (user2 != null) 
+		{
+			request.getSession().setAttribute("userId", user2.getUserId());
 			return "redirect:/doc/list.do";
-		} else {
+		} 
+		else {
 			return "login";
 		}
 		
@@ -38,7 +39,7 @@ public class UserController {
 	}
 	@RequestMapping(method = RequestMethod.POST,value = "/reg.do")
 	public String doReg(String user_name,String user_pwd,String user_pwd2,String user_yzm,HttpServletRequest request) {
-		User user = new User(user_name, user_pwd, DateFormatUtil.getTimeString());
+		User user = new User(null,user_name, user_pwd, DateFormatUtil.getTimeString());
 		userService.addUserByUser(user);
 		
 		return "/doc/list.do";
